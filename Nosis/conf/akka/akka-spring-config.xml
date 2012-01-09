@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:akka="http://www.akkasource.org/schema/akka"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+       http://www.akkasource.org/schema/akka
+       http://scalablesolutions.se/akka/akka-0.10.xsd">
+
+    <akka:typed-actor id="nosisClient"
+                    interface="org.ampf.nosis.agents.INosisClient"
+                    implementation="org.ampf.nosis.client.WebClientNosis"
+                    timeout="1000"
+                    scope="prototype">
+        <property name="urlPedidoInforme" value="/SAC_ServicioSF/Consulta_test.asp"/>
+        <property name="httpHost" value="200.68.219.76"/>
+        <property name="proxy" value="192.168.0.7"/>
+        <property name="proxyPort" value="8080"/>
+        <property name="proxyUser" value="lgarcia"/>
+        <property name="proxyPassword" value="heidegger"/>
+        <property name="nosisUser" value="60496"/>
+        <property name="nosisPassword" value="951174"/>
+    </akka:typed-actor>
+
+</beans>
+

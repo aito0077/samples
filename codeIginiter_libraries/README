@@ -1,0 +1,6 @@
+These are three helper libraries:
+Akka: to connect to a service server.
+Persistence: to parse object to json in order to call the akka service, depends on the action, to persist an entity.
+ISmarty: a wrapper for use the Smarty template engine in codeIgniter.
+
+

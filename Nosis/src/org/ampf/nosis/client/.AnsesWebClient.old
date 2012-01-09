@@ -1,0 +1,442 @@
+package org.ampf.anses.client;
+
+import org.ampf.anses.client.EasySSLProtocolSocketFactory;
+
+import au.id.jericho.lib.html.*;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Vector;
+
+import org.apache.commons.httpclient.HttpClient;
+import org.apache.commons.httpclient.HttpHost;
+import org.apache.commons.httpclient.HttpMethod;
+import org.apache.commons.httpclient.NameValuePair;
+import org.apache.commons.httpclient.UsernamePasswordCredentials;
+import org.apache.commons.httpclient.auth.AuthPolicy;
+import org.apache.commons.httpclient.auth.AuthScope;
+import org.apache.commons.httpclient.cookie.CookiePolicy;
+import org.apache.commons.httpclient.methods.GetMethod;
+import org.apache.commons.httpclient.protocol.Protocol;
+
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.IOException;
+import java.io.FileNotFoundException;
+
+import org.ampf.anses.domain.Transaction;
+import org.ampf.anses.domain.Socio;
+import org.ampf.anses.domain.SessionUser;
+import org.ampf.anses.domain.Autorizacion;
+
+import org.ampf.af.framework.Logic;
+import org.ampf.anses.client.IWebClient;
+import org.ampf.anses.client.WebAnsesException;
+
+public class AnsesWebClient extends Logic implements IWebClient {
+
+    final String HTTP_HOST = "200.26.56.113";
+    final int TIME_OUT_MILLISECONDS = 50000;
+    int status = -1;
+    String initialViewState = "";
+    boolean firstTime = true;
+
+    public void init(SessionUser sessionUser) {
+        EasySSLProtocolSocketFactory ESSL= new EasySSLProtocolSocketFactory();
+        protocolo = new Protocol("https", ESSL, 443);
+        Protocol.registerProtocol("https", protocolo);
+        httpclient = new HttpClient();
+        host = new HttpHost(HTTP_HOST, 443, protocolo);
+
+        httpclient.getHostConfiguration().setHost(host);
+        httpclient.getParams().makeLenient();
+        httpclient.getState().setCredentials(AuthScope.ANY, new UsernamePasswordCredentials(sessionUser.getUsuario(), sessionUser.getPassword()));
+        List authPrefs = new ArrayList(3);
+        authPrefs.add(AuthPolicy.BASIC);
+        authPrefs.add(AuthPolicy.NTLM);
+        httpclient.getParams().setAuthenticationPreemptive(true);   
+        httpclient.getParams().setParameter(AuthPolicy.AUTH_SCHEME_PRIORITY, authPrefs);
+        httpclient.getParams().setParameter(httpclient.getParams().USER_AGENT, "MSIE 6.0");
+        httpclient.getParams().setCookiePolicy(CookiePolicy.BROWSER_COMPATIBILITY);
+        httpclient.getParams().setParameter("http.socket.timeout", new Integer(TIME_OUT_MILLISECONDS));
+
+    }
+
+    public boolean realizarConexion() {
+        __EVENTTARGET         = new NameValuePair("__EVENTTARGET","");
+        __EVENTARGUMENT       = new NameValuePair("__EVENTARGUMENT","");
+        __VIEWSTATE           = new NameValuePair("__VIEWSTATE","");
+        __CURRENTREFRESHTICKET= new NameValuePair("__CURRENTREFRESHTICKET","2");
+
+        try {
+            httpget = new GetMethod("/");
+            executeMethod(httpget);
+
+            httpget = new GetMethod("https://"+HTTP_HOST+"/datsite/");
+            executeMethod(httpget);
+
+            httpget = new GetMethod("https://"+HTTP_HOST+"/datsite/home.aspx");
+            executeMethod(httpget);
+
+        } catch(Exception ex) {
+            //ToDo: log de error !!
+            ex.printStackTrace();
+            return false;
+        }
+        firstTime = true;
+        return (status == 200);
+    }
+
+    private void iniciarCiclo(Socio socio) throws WebAnsesException, Exception {
+        httpget = new GetMethod("https://"+HTTP_HOST+"/datsite/ABMNovedades.aspx");
+        executeMethod(httpget);
+
+        if(firstTime) {
+            initialViewState = getViewState(httpget.getResponseBodyAsString());
+            firstTime = false;
+        }
+        __VIEWSTATE.setValue(initialViewState);
+        __CURRENTREFRESHTICKET.setValue("2");
+        TxtIdBenef            = new NameValuePair("TxtIdBenef",socio.getLegajo().trim());
+
+        httpget.setQueryString(new NameValuePair[]{TxtIdBenef,  __VIEWSTATE, __CURRENTREFRESHTICKET});
+        executeMethod(httpget);
+    }
+
+    public boolean validarSocio(Socio socio) throws WebAnsesException, Exception {
+        iniciarCiclo(socio);
+
+        TxtIdBenef            = new NameValuePair("TxtIdBenef",socio.getLegajo().trim());
+        txtIDNovedad          = new NameValuePair("txtIDNovedad","");
+        TxtApellidoNombre     = new NameValuePair("TxtApellidoNombre","");
+
+        __VIEWSTATE.setValue(getViewState(httpget.getResponseBodyAsString()));
+        __EVENTTARGET.setValue("btnBuscar:_ctl0");
+        __EVENTARGUMENT.setValue("");
+        __CURRENTREFRESHTICKET.setValue(getRefreshTicket(httpget.getResponseBodyAsString()));
+        httpget = new GetMethod("https://"+HTTP_HOST+"/datsite/ABMNovedades.aspx");
+        httpget.setQueryString(new NameValuePair[]{TxtIdBenef, __VIEWSTATE, __CURRENTREFRESHTICKET,__EVENTTARGET,__EVENTARGUMENT});
+        executeMethod(httpget);
+
+        __CURRENTREFRESHTICKET.setValue(getRefreshTicket(httpget.getResponseBodyAsString()));
+        __VIEWSTATE.setValue(getViewState(httpget.getResponseBodyAsString()));
+
+        txtApellido = getValorFormulario(httpget.getResponseBodyAsString(),"TxtApellidoNombre");
+        if(txtApellido != null) {
+            txtApellido = txtApellido.trim();
+        }
+        socio.setApellidoNombreAnses(txtApellido);
+        showErrors(httpget.getResponseBodyAsString()); 
+
+        if(!txtApellido.trim().equals(socio.getApellidoNombre().replaceAll("_"," ").trim())) {
+            return false;
+        } else {
+            TxtApellidoNombre.setValue(socio.getApellidoNombreAnses());
+            return true;
+        }
+    }
+
+    public boolean autorizarTransaccion(Transaction transaction, Autorizacion autorizacion ) throws WebAnsesException, Exception {
+
+        DDLTipoConcepto       = new NameValuePair("DDLTipoConcepto", transaction.getTipoConcepto().trim());
+        DDLConceptoOPP        = new NameValuePair("DDLConceptoOPP",transaction.getCodConcepto().trim());
+        TxtComprobante        = new NameValuePair("TxtComprobante",transaction.getServicio().trim().replaceAll("%"," "));
+        String impTotal = transaction.getMonto().trim();
+        try {
+            impTotal = impTotal.replaceAll("\\.", ",");
+        } catch(Exception ex) {
+            impTotal = transaction.getMonto().trim();
+        }
+        TxtImpTotal           = new NameValuePair("TxtImpTotal", impTotal);
+        TxtCantCuotas         = new NameValuePair("TxtCantCuotas",(transaction.getCuotas()==null) ? "":transaction.getCuotas().trim());
+
+        __EVENTTARGET.setValue("BtnNuevo:_ctl0");
+        __EVENTARGUMENT.setValue("");
+        
+        httpget = new GetMethod("https://"+HTTP_HOST+"/datsite/ABMNovedades.aspx");
+        httpget.setQueryString(new NameValuePair[]{TxtIdBenef, TxtApellidoNombre,__VIEWSTATE, __CURRENTREFRESHTICKET,__EVENTTARGET,__EVENTARGUMENT});
+        executeMethod(httpget);
+        
+        __EVENTTARGET.setValue("DDLTipoConcepto");
+        __EVENTARGUMENT.setValue("");
+        __CURRENTREFRESHTICKET.setValue(getRefreshTicket(httpget.getResponseBodyAsString()));
+        __VIEWSTATE.setValue(getViewState(httpget.getResponseBodyAsString()));
+        httpget.setQueryString(new NameValuePair[]{TxtIdBenef, TxtApellidoNombre,DDLTipoConcepto,__VIEWSTATE, __CURRENTREFRESHTICKET,__EVENTTARGET,__EVENTARGUMENT});
+        executeMethod(httpget);
+
+        __EVENTTARGET.setValue("BtnGuardar:_ctl0");
+        __EVENTARGUMENT.setValue("");
+        __CURRENTREFRESHTICKET.setValue(getRefreshTicket(httpget.getResponseBodyAsString()));
+        __VIEWSTATE.setValue(getViewState(httpget.getResponseBodyAsString()));
+
+        switch(Integer.parseInt(transaction.getTipoConcepto())) {
+            case 1:
+                httpget.setQueryString(new NameValuePair[]{TxtIdBenef, TxtApellidoNombre,DDLTipoConcepto,DDLConceptoOPP,TxtImpTotal, TxtComprobante,__VIEWSTATE, __CURRENTREFRESHTICKET,__EVENTTARGET,__EVENTARGUMENT});
+                break;
+            case 3:
+                TxtCantCuotas.setValue(transaction.getCuotas());
+                httpget.setQueryString(new NameValuePair[]{TxtIdBenef, TxtApellidoNombre,DDLTipoConcepto,DDLConceptoOPP,TxtImpTotal,TxtCantCuotas, TxtComprobante,__VIEWSTATE, __CURRENTREFRESHTICKET,__EVENTTARGET,__EVENTARGUMENT});
+                break;
+            default:
+                break;
+        }
+        executeMethod(httpget);
+        __CURRENTREFRESHTICKET.setValue(getRefreshTicket(httpget.getResponseBodyAsString()));
+        __VIEWSTATE.setValue(getViewState(httpget.getResponseBodyAsString()));
+
+        if(status != 200) {
+            autorizacion.setErrorConexion(status);
+            if(status == 401) {
+                autorizacion.setObservacion("USUARIO Y PASSWORD INCORRECTOS (CODIGO CONEXION "+status+")");
+                return false;
+            }
+            autorizacion.setObservacion("PROBLEMA DE CONEXION (CODIGO CONEXION "+status+")");
+            return false;
+        }
+        
+        switch(validarMensaje(httpget.getResponseBodyAsString())) {
+            case 9: 
+                autorizacion.setMargenInsuficiente(true);
+                autorizacion.setObservacion("Afectacion disponible insuficiente");
+                return false;
+            case 8:  
+                autorizacion.setObservacion("Solo se puede ingresar una novedad para el concepto ingresado");
+                return false;
+            case 7:  
+                autorizacion.setObservacion("Maxima cantidad de intentos permitidos");
+                return false;
+            default:
+                break;
+        }
+
+        autorizacion.setTransaccion(getValorFormulario(httpget.getResponseBodyAsString(),"TxtTransaccion"));
+        autorizacion.setFirma(getValorFormulario(httpget.getResponseBodyAsString(),"TxtMAC"));
+
+        if(autorizacion.getFirma() == null || autorizacion.getFirma().trim().equals("")) {
+            autorizacion.setObservacion("Incoherencia de datos: no se pudo obtener firma digital. Verificar contra ANSES.");
+            return false;
+        }
+
+        String certificado = "";
+        try {
+            httpget = new GetMethod("https://"+HTTP_HOST+"/datsite/comprobante.aspx?IDNov="+autorizacion.getTransaccion());
+            executeMethod(httpget);
+            certificado = httpget.getResponseBodyAsString();
+        } catch(Exception ex) {
+            ERROR(ex.toString());
+            autorizacion.setCodigoRespuesta("99");
+            autorizacion.setError(""+ex.toString());
+        }
+
+        autorizacion.setFecha(getCampoValor(certificado,"LblFecha"));
+        autorizacion.setHora(getCampoValor(certificado,"LblHora"));
+        autorizacion.setPrimerMensual(getCampoValor(certificado,"lblPrimerMensual"));
+
+        if(autorizacion.getError() != null) {
+            autorizacion.setCodigoRespuesta("99");
+            if(autorizacion.getError().length() > 100) {
+                autorizacion.setError(autorizacion.getError().substring(0,100));
+            }
+            return false;
+        } 
+
+        if(autorizacion.getFecha() != null && autorizacion.getCodigoRespuesta() == null) {
+            if(autorizacion.getFecha().trim().length() == 10) {
+                autorizacion.setFechaFormato(autorizacion.getFecha().trim().substring(6)+autorizacion.getFecha().trim().substring(3,5)+autorizacion.getFecha().trim().substring(0,2));
+                if(autorizacion.getHora() != null) {
+                    if(autorizacion.getHora().trim().length() == 8) {
+                        autorizacion.setFechaFormato(autorizacion.getFechaFormato()+" "+autorizacion.getHora());
+                    } else {
+                        autorizacion.setFechaFormato(autorizacion.getFechaFormato()+" "+autorizacion.getHora());
+                        autorizacion.setCodigoRespuesta("12");
+                        autorizacion.setError(autorizacion.getError()+" MAL FORMATO HORA");
+                    }
+                } else {
+                    autorizacion.setFechaFormato(autorizacion.getFechaFormato()+" "+autorizacion.getHora());
+                    autorizacion.setCodigoRespuesta("13");
+                    autorizacion.setError(autorizacion.getError()+" NO SE ENCUENTRA LA HORA");
+                }
+            } else {
+                autorizacion.setFechaFormato(autorizacion.getFechaFormato()+" "+autorizacion.getHora());
+                autorizacion.setCodigoRespuesta("10");
+                autorizacion.setError(autorizacion.getError()+" MAL FORMATO FECHA");
+            }
+        } else {
+            autorizacion.setFechaFormato(autorizacion.getFechaFormato()+" "+autorizacion.getHora());
+            autorizacion.setCodigoRespuesta("11");
+            autorizacion.setError(autorizacion.getError()+" NO SE ENCUENTRA LA FECHA");
+        }
+
+        if(autorizacion.getPrimerMensual() != null && autorizacion.getCodigoRespuesta() == null) {
+            if(autorizacion.getPrimerMensual().trim().length() == 7) {
+                autorizacion.setPrimerMensual(autorizacion.getPrimerMensual().substring(3)+autorizacion.getPrimerMensual().substring(0,2));
+            } else {
+                autorizacion.setCodigoRespuesta("15");
+                autorizacion.setError(autorizacion.getError()+" PRIMER MENSUAL ERRONEO");
+            }
+        } else {
+            autorizacion.setCodigoRespuesta("15");
+            autorizacion.setError(autorizacion.getError()+" PRIMER MENSUAL ERRONEO");
+        }
+
+        return true;
+    }
+
+    private void executeMethod(HttpMethod method) throws WebAnsesException {
+        try {
+            status = httpclient.executeMethod(httpget);
+        } catch(Exception ex) {
+            throw new WebAnsesException("Problema de conexion: ["+ex.getMessage()+"]" );
+        }
+        if(status > 399) {
+            throw new WebAnsesException("Problema de conexion: ["+status+"]" );
+        }
+    }
+
+
+    private String getViewState(String flujo) throws WebAnsesException {
+        String viewStateString = getFieldValue(flujo, "__viewstate");
+        if(viewStateString == null || viewStateString.trim().equals("")) {
+            throw new WebAnsesException("Problema de conexion: ["+status+"] viewState="+viewStateString);
+        }
+        return viewStateString;
+    }
+
+    private String getRefreshTicket(String flujo) {
+        return getFieldValue(flujo, "__currentrefreshticket");
+    }
+
+    private String getFieldValue(String flujo, String fieldName) {
+        String viewstate = "";
+        if(flujo != null) {
+            Source source = new Source(flujo);
+            FormFields formFields = source.findFormFields();
+
+            for (Iterator i = formFields.iterator(); i.hasNext();) {
+                FormField formField = (FormField)i.next();
+                String nombre = formField.getName();
+                if(nombre != null && nombre.toLowerCase().equals(fieldName)) {
+                    if(!formField.getValues().isEmpty()) {
+                        viewstate = formField.getValues().iterator().next().toString();
+                        break;
+                    }
+                }
+            }
+        }
+        return viewstate;
+    }
+    
+    private Vector getErrores(String flujo) {
+        Vector errores = new Vector();
+        try {
+            Source source = new Source(flujo);
+            Element tabla = source.getElementById("sValidacion");
+            if(tabla != null) {
+                Segment segmento = tabla.getContent();
+                if(segmento != null) {
+                    List lista = segmento.findAllStartTags("LI");
+                    if(!lista.isEmpty()) {
+                        for(int i = 0; i<lista.size();i++) {
+                            String error = ((StartTag)lista.get(i)).getElement().getTextExtractor().toString();
+                            ERROR(error);
+                            errores.add(error);
+                        }
+                    }
+                }
+            }
+        } catch(Exception ex) {
+            WARNING("Problema en el parseo de errores en WebClient. "+ex.toString());
+        }
+        return errores;
+    }
+
+    private void showErrors(String flujo) {
+        Vector errores = getErrores(flujo);
+    } 
+    
+    private String getCampoValor(String flujo, String campo) {
+        String valor = "";
+        if(flujo != null) {
+            Source source = new Source(flujo);
+            Element ELEMENTO = source.getElementById(campo);
+            if(ELEMENTO != null) {
+                valor = ELEMENTO.getTextExtractor().toString();
+            }
+        }
+        return valor;
+    }
+    
+    private String getValorFormulario(String flujo, String Campo) {
+        String resultado = "";
+        if(flujo != null) {
+            Source source = new Source(flujo);
+            FormFields formFields = source.findFormFields();
+            
+            for (Iterator i = formFields.iterator(); i.hasNext();) {
+                FormField formField = (FormField)i.next();
+                String nombre = formField.getName();
+                if(nombre != null && nombre.toLowerCase().equals(Campo.toLowerCase())) {
+                    if(!formField.getValues().isEmpty()) {
+                        resultado = formField.getValues().iterator().next().toString();
+                        break;
+                    }
+                }
+            }
+        }
+        
+        return resultado;
+    }
+    
+    private int validarMensaje(String cuerpo) {
+        int res = -1;
+        if(cuerpo.indexOf("Disponible Insuficiente") != -1) {
+            res = 9;
+        }
+        if(cuerpo.indexOf("Solo se puede ingresar una novedad para el concepto ingresado") != -1) {
+            res = 8;
+        }
+        if(cuerpo.indexOf("ima cantidad de intentos permitidos") != -1) {
+            res = 7;
+        }
+        return res;
+    }
+    
+    public void inicializacionCampos(Socio socio, Transaction transaction) {
+        txtIDNovedad          = new NameValuePair("txtIDNovedad","");
+        DDLTipoConcepto       = new NameValuePair("DDLTipoConcepto", transaction.getTipoConcepto().trim());
+        DDLConceptoOPP        = new NameValuePair("DDLConceptoOPP",transaction.getCodConcepto().trim());
+        TxtComprobante        = new NameValuePair("TxtComprobante",transaction.getServicio().trim().replaceAll("%"," "));
+        TxtImpTotal           = new NameValuePair("TxtImpTotal",transaction.getMonto().trim());
+        TxtCantCuotas         = new NameValuePair("TxtCantCuotas",transaction.getCuotas().trim());
+        httpget = new GetMethod("https://"+HTTP_HOST+"/datsite/ABMNovedades.aspx");
+    }
+
+    public void disconnect() {
+        if(httpget != null) {
+            httpget.releaseConnection();
+        }
+    }
+
+    StrictSSLProtocolSocketFactory SSLProtocol;
+    Protocol protocolo;
+    HttpClient httpclient;
+    HttpHost host;
+
+    NameValuePair __EVENTTARGET;
+    NameValuePair __EVENTARGUMENT;
+    NameValuePair __VIEWSTATE;
+    NameValuePair TxtIdBenef;
+    NameValuePair txtIDNovedad;
+    NameValuePair TxtApellidoNombre;
+    NameValuePair DDLTipoConcepto;
+    NameValuePair DDLConceptoOPP;
+    NameValuePair TxtComprobante;
+    NameValuePair TxtImpTotal;
+    NameValuePair TxtCantCuotas;
+    NameValuePair __CURRENTREFRESHTICKET;
+    String txtApellido = "";
+    GetMethod httpget;
+}
