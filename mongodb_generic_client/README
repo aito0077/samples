@@ -1,0 +1,4 @@
+Two webservices to store/retrieve json objects against MongoDb engine.
+Saver: stores a generic object (json format) in an schema defined by its type.
+Fetcher: get an object from its type and id.
+Both services are intended to use inside an akka engine, using camel as a router.
