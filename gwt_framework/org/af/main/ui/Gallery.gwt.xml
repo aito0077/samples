@@ -1,0 +1,16 @@
+<module>
+	<inherits name='com.gwtext.GwtExt'/>
+	<inherits name='com.google.gwt.user.User'/>
+	<inherits name="com.google.gwt.emul.Emulation"/>
+	<inherits name="com.google.gwt.http.HTTP"/>
+	<inherits name="com.google.gwt.i18n.I18N"/>
+	<inherits name="asquare.gwt.tk.Tk"/>
+	<inherits name="asquare.gwt.sb.Sandbox"/>
+	<script src="/AMPF_APPLICATION_NAME/static/javascript/_reusable/extux/livegrid/BufferedGridDragZone.js"/>
+	<script src="/AMPF_APPLICATION_NAME/static/javascript/_reusable/extux/livegrid/BufferedGridToolbar.js"/>
+	<script src="/AMPF_APPLICATION_NAME/static/javascript/_reusable/extux/livegrid/BufferedGridView.js"/>
+	<script src="/AMPF_APPLICATION_NAME/static/javascript/_reusable/extux/livegrid/BufferedJsonReader.js"/>
+	<script src="/AMPF_APPLICATION_NAME/static/javascript/_reusable/extux/livegrid/BufferedRowSelectionModel.js"/>
+	<script src="/AMPF_APPLICATION_NAME/static/javascript/_reusable/extux/livegrid/BufferedStore.js"/>
+	<stylesheet src="/AMPF_APPLICATION_NAME/static/javascript/_reusable/extux/livegrid/BufferedGrid.css"/>
+</module>
