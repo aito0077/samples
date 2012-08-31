@@ -1,0 +1,47 @@
+K 25
+svn:wc:ra_dav:version-url
+V 53
+/svn/dev/!svn/ver/7706/Ampf/src/org/ampf/af/ui/client
+END
+ServiceCommand.java
+K 25
+svn:wc:ra_dav:version-url
+V 73
+/svn/dev/!svn/ver/5927/Ampf/src/org/ampf/af/ui/client/ServiceCommand.java
+END
+ServiceCommandInterface.java
+K 25
+svn:wc:ra_dav:version-url
+V 82
+/svn/dev/!svn/ver/5927/Ampf/src/org/ampf/af/ui/client/ServiceCommandInterface.java
+END
+CallbackTarget.java
+K 25
+svn:wc:ra_dav:version-url
+V 73
+/svn/dev/!svn/ver/4956/Ampf/src/org/ampf/af/ui/client/CallbackTarget.java
+END
+AsyncCallbackJSON.java
+K 25
+svn:wc:ra_dav:version-url
+V 76
+/svn/dev/!svn/ver/6420/Ampf/src/org/ampf/af/ui/client/AsyncCallbackJSON.java
+END
+CallbackJSONEvent.java
+K 25
+svn:wc:ra_dav:version-url
+V 76
+/svn/dev/!svn/ver/4956/Ampf/src/org/ampf/af/ui/client/CallbackJSONEvent.java
+END
+ParentCaller.java
+K 25
+svn:wc:ra_dav:version-url
+V 71
+/svn/dev/!svn/ver/4956/Ampf/src/org/ampf/af/ui/client/ParentCaller.java
+END
+ServiceHandler.java
+K 25
+svn:wc:ra_dav:version-url
+V 73
+/svn/dev/!svn/ver/7706/Ampf/src/org/ampf/af/ui/client/ServiceHandler.java
+END

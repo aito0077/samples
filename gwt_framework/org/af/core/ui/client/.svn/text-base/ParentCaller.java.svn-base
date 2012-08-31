@@ -1,0 +1,9 @@
+package org.ampf.af.ui.client;
+
+/**
+ * Example remote service.
+ */
+public interface ParentCaller {
+
+	public void refresh();
+}
