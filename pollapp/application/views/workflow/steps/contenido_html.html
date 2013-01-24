@@ -1,0 +1,11 @@
+<!DOCTYPE html>
+<div metal:use-macro="/workflow/wrapper/process_wrapper.html/process_wrapper">
+    <div metal:fill-slot="activity">
+
+        <div id="contenido_titulo_pregunta">Pregunta <span tal:content="actividad/orden">{{ACTIVIDAD_TITULO}}</span></div>
+        <div id="contenido_texto_pregunta">
+            <strong tal:content="php:htmlentities(actividad/texto)">{{ACTIVIDAD_TEXTO}}</strong>
+        </div>
+
+    </div>
+</div>

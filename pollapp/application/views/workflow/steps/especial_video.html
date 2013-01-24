@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<div metal:use-macro="/workflow/wrapper/process_wrapper.html/process_wrapper">
+    <div metal:fill-slot="activity">
+
+        <video width="320" height="240" controls="controls">
+            <source src="${actividad/datapath}" type="video/mkv"/>
+            Your browser does not support the video tag.
+        </video>
+        <!--
+        <video id="my_video_1" class="video-js vjs-default-skin" preload="auto" width="640" height="264" data-setup="{}">
+              <source src="${actividad/datapath}" type='video/avi'/>
+        </video>
+        -->
+
+    </div>
+
+    <tal:block metal:fill-slot="activity_js_resources">
+        <link href="/static/plugins/media/video-js.css" rel="stylesheet"></link>
+    </tal:block>
+    <tal:block metal:fill-slot="activity_js_resources">
+        <script src="/static/js/jquery.js"></script>
+        <!--
+        <script type="text/javascript" src="/static/plugins/media/video.js"></script>
+        -->
+    </tal:block>
+
+</div>
+

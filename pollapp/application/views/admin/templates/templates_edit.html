@@ -1,0 +1,69 @@
+    <div id="edit_process_templates" class="container-fluid" metal:define-macro="templates_list">
+        <div class="row-fluid"  style="overflow: hidden">
+            <div class="span1 bs-docs-sidebar" >
+                <ul class="nav nav-list bs-docs-sidenav">
+                    <li><a id="template_proceso"><i class="icon-chevron-right"></i>Proceso</a></li>
+                    <li><a id="template_actividades"><i class="icon-chevron-right"></i>Actividades</a></li>
+                    <li><a id="template_login"><i class="icon-chevron-right"></i>Login</a></li>
+                    <li><a id="template_finish"><i class="icon-chevron-right"></i>Pantalla Final</a></li>
+                    <li><a id="template_report"><i class="icon-chevron-right"></i>Reportes</a></li>
+                    <li><a id="template_home"><i class="icon-chevron-right"></i>Home</a></li>
+                    <li><a id="template_others"><i class="icon-chevron-right"></i>Especiales</a></li>
+                        
+                </ul>
+            </div>
+            <div id="template_edit_content" class="offset2 span9">
+                <div class="row">
+                    <span id="button_templates_generar" class="btn btn-medium btn-warning offset9 span3">Generar Plantillas</span>
+                </div>
+                <div id="body_template_proceso" class="row body_template">
+                    Proceso
+                </div>
+                <div id="body_template_actividades" class="row body_template">
+               </div>
+                <div id="body_template_login" class="row body_template">
+               </div>
+                <div id="body_template_finish" class="row body_template">
+                   Finish 
+                </div>
+                <div id="body_template_report" class="row body_template">
+                   Report 
+                </div>
+                <div id="body_template_home" class="row body_template">
+                      Home 
+                </div>
+                <div id="body_template_others" class="row body_template">
+                     Others 
+                </div>
+                <div id="body_editor" class="row body_template" style="display:none">
+                    <div class="row" id="body_action">
+                            <select class="span5 input-large" id="template_actividades_seleccion"> </select>
+                            <span id="button_templates_editar" class="btn btn-medium btn-primary offset3 span2">Editar</span>
+                            <span id="button_templates_visualizar" class="btn btn-medium btn-success span2">Visualizar</span>
+                    </div>
+
+                    <div id="template_view_container" class="row scrollable">
+                        <pre id="template_view" class="prettyprint linenums lang-html">
+
+                        </pre>
+                    </div>
+                    <div id="template_edit_container" class="row scrollable">
+                       <!--
+                        <div id="template_edit" class="row" style="min-height:100%;height:100%"></div>
+                        -->
+                        <div id="template_edit" class="row" style="min-height:100%;height:100%">
+                            <textarea id="template_code" name="template_code"></textarea>
+                        </div>
+
+                        <div id="template_action" class="row">
+                            <span id="button_templates_cancelar" class="btn btn-medium span2 offset8" >Cancelar</span>
+                            <span id="button_templates_guardar" class="btn btn-medium span2 btn-primary" >Guardar</span>
+                        </div>
+                    </div>
+                </div>
+ 
+
+            </div>
+        </div>
+    </div>
+

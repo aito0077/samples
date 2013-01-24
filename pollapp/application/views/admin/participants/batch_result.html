@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html metal:use-macro="/admin/wrapper/main.html/layout">
+    <div id="main_edit" metal:fill-slot="main_content">
+        <h2><strong>Lote de usuarios</strong></h2>
+        <form id="file_structure" action="/admin/participants/batch_finish" method="POST" enctype="multipart/form-data">
+            <input name="batch_id" id="batch_id" type='hidden' value="${batch_id}"/>
+            <div id="participants_records" class="columns fuelux" >
+
+                <table id="participants_table" class="table table-bordered datagrid">
+                    <thead>
+                        <tr>
+                            <th>
+                                <span class="datagrid-header-title">Candidatos</span>
+                                <div class="datagrid-header-left">
+                                        <span type="button" id="button_batch_agregar_registro" class="btn btn-success">Agregar&nbsp;<i class="icon-plus icon-white"></i></span>
+                                 </div>
+                                <div class="datagrid-header-right">
+                                    <div class="input-append search">
+                                        <input type="text" id="search_grid" class="input-medium" placeholder="Search"></input><button class="btn"><i class="icon-search"></i></button>
+                                    </div>
+                                </div>
+                            </th>
+                        </tr>
+                    </thead>
+
+                    <tfoot>
+                        <tr>
+                            <th>
+                                <div class="datagrid-footer-left" style="display:none;">
+                                    <div class="grid-controls">
+                                        <span><span class="grid-start"></span> - <span class="grid-end"></span> de <span class="grid-count"></span></span>
+                                            <select class="grid-pagesize"><option>10</option><option>20</option><option>50</option><option>100</option></select>
+                                        <span>Por Pagina</span>
+                                    </div>
+                                </div>
+                                <div class="datagrid-footer-right" style="display:none;">
+                                    <div class="grid-pager">
+                                        <button class="btn grid-prevpage"><i class="icon-chevron-left"></i></button>
+                                        <span>P&aacute;gina</span>
+                                        <div class="input-append dropdown combobox">
+                                            <input class="span1" type="text"></input><button class="btn" data-toggle="dropdown"><i class="caret"></i></button>
+                                            <ul class="dropdown-menu"></ul>
+                                        </div>
+                                        <span>de <span class="grid-pages"></span></span>
+                                        <button class="btn grid-nextpage"><i class="icon-chevron-right"></i></button>
+                                    </div>
+                                </div>
+                            </th>
+                        </tr>
+                    </tfoot>
+               </table>
+
+            </div>
+ 
+
+
+            <div id="dialog_editar_participante" class="modal bigModal" style="display:none" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-show="false">
+                <div id="form_record">
+                    <tal:block tal:repeat="definition descriptors">
+                        <br/>
+                        <div class="form-inline">
+                            <label class="span1" for="name_${definition/order}">${definition/name}:</label>
+                            <input class="offset1 campo" type="text" id="${definition/name}" name="${definition/name}" autocomplete="off" value=""/> 
+                        </div>
+                    </tal:block>
+                </div>
+                <div class="modal-footer">
+                    <span id="button_cancelar_edicion" class="btn" data-dismiss="modal" aria-hidden="true">Cancelar</span>
+                    <span id="button_guardar_participante" class="btn btn-primary">Guardar</span>
+                </div>
+           </div>
+
+
+            <div class="form-actions">
+                <button type="submit" class="offset8 btn btn-primary">Aceptar</button>
+            </div>
+        </form>
+ 
+    </div> <!-- /container -->
+
+    <tal:block metal:fill-slot="wrapper_js">
+        <script src="/static/js/admin/edit_batch_participants.js"></script>
+        <link rel="stylesheet" type="text/css" media="screen" href="/static/plugins/fuelux/css/fuelux.css"></link>
+        <link rel="stylesheet" type="text/css" media="screen" href="/static/plugins/fuelux/css/fuelux-responsive.css"></link>
+        <script type="text/javascript" src="/static/plugins/fuelux/loader.js"></script>
+        <script src="/static/js/require.js"></script>
+        <script>
+            requirejs.config({ baseUrl: '/static/plugins/fuelux'});
+        </script>
+
+
+        <script type="text/javascript">
+            $(document).ready(function() {
+                $('input[id=batch_file]').change(function() {
+                    $('#batch_file_name').val($(this).val());
+                });
+                window.EditBatch = new Admin.EditBatch({
+                    el: $('#main_edit')
+                });
+                window.EditBatch.reset({
+                    batch_id: '${batch_id}'
+                });
+            });
+        </script>
+
+    </tal:block>
+
+</html>
+

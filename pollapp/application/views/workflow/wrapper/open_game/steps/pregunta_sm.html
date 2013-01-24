@@ -1,0 +1,20 @@
+    <tal:block metal:define-macro="activity">
+
+        <div id="contenedor_pregunta_game">
+            <span class="pregunta" tal:content="actividad/descripcion">{{DESCRIPCION}}</span>
+
+            <tal:block tal:condition="php:!empty(pregunta)">
+                <span class="pregunta_bold">&nbsp;&nbsp;&nbsp;${actividad/pregunta}</span>
+            </tal:block>
+        </div>
+        <div id="contenedor_respuestas_game"> 
+            <tal:block tal:repeat="respuesta actividad/respuestas">
+            <label>
+                <input type="checkbox" class="checkbox" name="${actividad/codigo}[]" id="${actividad/codigo}[]" value="${respuesta/valor}"/>
+                <span class="respuestas" tal:content="respuesta/texto">{{RESPUESTA_TEXTO}}</span>
+            </label>
+            <br /><br />
+            </tal:block>
+        </div>
+
+    </tal:block>

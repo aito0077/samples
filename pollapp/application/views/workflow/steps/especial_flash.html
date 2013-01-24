@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<div metal:use-macro="/workflow/wrapper/process_wrapper.html/process_wrapper">
+    <div metal:fill-slot="activity">
+        <div id="flash_content" width="100%" height="100%">
+            Su navegador no soporta video flash
+        </div>
+    </div>
+
+    <tal:block metal:fill-slot="activity_js_resources">
+        <script src="/static/js/jquery.js"></script>
+        <script type="text/javascript" src="/static/plugins/media/swfobject.js"></script>
+        <script type="text/javascript">
+            var height = $('#contenido').height(),
+                width = $('#contenido').width();
+
+            swfobject.embedSWF("${actividad/datapath}", "flash_content", width, height, "9.0.0");
+        </script>
+    </tal:block>
+
+</div>
+

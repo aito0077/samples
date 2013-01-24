@@ -1,0 +1,395 @@
+#contenedor {
+	height: 600px;
+	width: 960px;
+	margin-right: auto;
+	margin-left: auto;
+	background-image: url(images/fondo_compliance.jpg);
+}
+#contenedor_puntaje {
+	height: 600px;
+	width: 960px;
+	margin-right: auto;
+	margin-left: auto;
+	background-image: url(images/fondo_final.jpg);
+}
+#contenido_puntaje {
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 10px;
+	color: #000;
+	float: right;
+	height: 260px;
+	width: 670px;
+	margin-top: 257px;
+	margin-right: 120px;
+}
+#contenedor_general {
+	height: 600px;
+	width: 960px;
+	margin-right: auto;
+	margin-left: auto;
+	background-color: #FFF;
+}
+#contenedor_bases {
+	height: 1328px;
+	width: 960px;
+	margin-right: auto;
+	margin-left: auto;
+	background-color: #FFF;
+}
+#footer_intructivo {
+	background-image: url(images/footer_instructivo.jpg);
+	float: left;
+	height: 61px;
+	width: 960px;
+}
+#lateral {
+	background-image: url(images/lateral.jpg);
+	float: left;
+	height: 372px;
+	width: 130px;
+}
+#lateral_derecho {
+	background-image: url(images/premios_04.jpg);
+	float: left;
+	height: 557px;
+	width: 180px;
+	margin-top: 40px;
+}
+#contenido {
+	float: left;
+	height: 362px;
+	width: 620px;
+	margin-left: 20px;
+}
+#contenido_titulo {
+	float: left;
+	height: 20px;
+	width: 620px;
+	margin-bottom: 10px;
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 18px;
+	font-weight: bold;
+	color: #000;
+	background-color: #FFF;
+}
+#contenido_texto {
+	float: left;
+	height: 332px;
+	width: 620px;
+	margin-bottom: 10px;
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 11px;
+	color: #000;
+	line-height: 17px;
+}
+#contenido_bases {
+	float: left;
+	height: 1100px;
+	width: 620px;
+	margin-left: 20px;
+	background-color: #FFF;
+}
+#contenido_texto_bases {
+	float: left;
+	height: 1132px;
+	width: 620px;
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 12px;
+	color: #000;
+	background-color: #FFF;
+}
+#btn_juga {
+	float: left;
+	height: 56px;
+	width: 173px;
+	margin-top: 296px;
+	margin-left: 10px;
+}
+#header {
+	background-image: url(images/header_compliance.jpg);
+	float: left;
+	height: 167px;
+	width: 960px;
+}
+#ingresar {
+	font-family: Arial, Helvetica, sans-serif;
+	float: right;
+	height: 132px;
+	width: 300px;
+	margin-top: 313px;
+}
+#partcipa {
+	font-size: 25px;
+	color: #000;
+	float: left;
+	height: 30px;
+	width: 270px;
+	font-weight: bold;
+}
+#carga_numero {
+	font-size: 14px;
+	color: #000;
+	float: left;
+	height: 25px;
+	width: 270px;
+	margin-top: 10px;
+}
+#btn_ingresar {
+	font-size: 25px;
+	font-weight: bold;
+	height: 30px;
+	width: 260px;
+	float: left;
+	text-align: right;
+}
+#texto_ingresar {
+	font-size: 13px;
+	float: left;
+	height: 15px;
+	width: 270px;
+	margin-top: 5px;
+}
+#btn_ingresar a {
+	color: #000;
+	text-decoration: none;
+}
+#btn_ingresar a:hover {
+	color: #0179C2;
+}
+#texto_error {
+	font-size: 11px;
+	float: left;
+	height: 15px;
+	width: 270px;
+	margin-top: 5px;
+	color: #F00;
+}
+#botonera {
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 14px;
+	color: #FFF;
+	background-color: #1978BE;
+	float: right;
+	height: 26px;
+	width: 475px;
+	margin-top: 94px;
+	padding-top: 7px;
+	padding-left: 9px;
+}
+#botonera a {
+	color: #FFF;
+	text-decoration: none;
+}
+#botonera a:hover {
+	color: #999;
+}
+#contenido_titulo_pregunta {
+	float: left;
+	height: 30px;
+	width: 620px;
+	margin-bottom: 10px;
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 20px;
+	font-weight: bold;
+	color: #1978BE;
+}
+#contenido_texto_pregunta {
+	float: left;
+	height: auto;
+	width: 620px;
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 13px;
+	color: #000;
+	text-align: justify;
+}
+#contenido_texto_respuesta {
+	float: left;
+	height: auto;
+	width: 620px;
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 12px;
+	color: #000;
+	text-align: justify;
+	margin-top: 9px;
+}
+#btn_siguiente {
+	float: left;
+	height: 37px;
+	width: 149px;
+	margin-top: 305px;
+	margin-left: 10px;
+}
+#footer_preguntas {
+	background-image: url(images/footer_preguntas.jpg);
+	float: left;
+	height: 61px;
+	width: 960px;
+}
+.aclaracion {
+	font-size: 11px;
+}
+#puntaje_titulo {
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 24px;
+	color: #000;
+	float: left;
+	height: 30px;
+	width: 670px;
+	font-weight: bold;
+}
+#puntaje_texto {
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 14px;
+	color: #000;
+	float: left;
+	height: 15px;
+	width: 340px;
+	margin-top: 10px;
+	margin-right: 330px;
+	font-weight: bold;
+	margin-bottom: 5px;
+}
+#puntaje_preguntas {
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 10px;
+	color: #000;
+	float: left;
+	height: 15px;
+	width: 70px;
+	margin-top: 10px;
+	font-weight: bold;
+	margin-left: 120px;
+}
+#puntaje_texto_final {
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 14px;
+	color: #000;
+	float: left;
+	height: 35px;
+	width: 670px;
+	margin-top: 25px;
+	font-weight: bold;
+	text-align: center;
+}
+#puntaje_respuesta {
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 10px;
+	color: #000;
+	float: left;
+	height: 15px;
+	width: 100px;
+	margin-top: 10px;
+}
+#puntaje_respuesta2 {
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 10px;
+	color: #000;
+	float: left;
+	height: 15px;
+	width: 70px;
+	margin-top: 10px;
+	margin-right: 100px;
+}
+#puntaje_respuesta3 {
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 10px;
+	color: #000;
+	float: left;
+	height: 15px;
+	width: 70px;
+	margin-top: 10px;
+}
+#puntaje_final {
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 24px;
+	color: #000;
+	float: left;
+	height: 35px;
+	width: 340px;
+	margin-top: 25px;
+	font-weight: bold;
+	text-align: center;
+	margin-left: 100px;
+}
+#imprimir {
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 14px;
+	color: #000;
+	float: left;
+	height: 20px;
+	width: 70px;
+	font-weight: bold;
+	text-align: center;
+	margin-left: 20px;
+}
+#contenido_texto_respuesta1 {
+	float: left;
+	height: auto;
+	width: 620px;
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 12px;
+	color: #000;
+	text-align: justify;
+	margin-top: 5px;
+}
+#contenido_texto_finalizar {
+	float: left;
+	height: 80px;
+	width: 620px;
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 18px;
+	font-weight: bold;
+	color: #1978BE;
+	margin-top: 30px;
+}
+#contenido_texto_premios {
+	float: left;
+	height: 557px;
+	width: 620px;
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 12px;
+	color: #000;
+	background-color: #FFF;
+}
+#contenido_premios {
+	float: left;
+	height: 597px;
+	width: 620px;
+	margin-left: 20px;
+	background-color: #FFF;
+}
+#contenido_titulo_premios {
+	float: left;
+	height: 30px;
+	width: 620px;
+	margin-bottom: 10px;
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 24px;
+	font-weight: bold;
+	color: #000;
+}
+#contenedor_premios {
+	height: 825px;
+	width: 960px;
+	margin-right: auto;
+	margin-left: auto;
+	background-color: #FFF;
+}
+#btn_correctas {
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 14px;
+	color: #000;
+	float: left;
+	height: 37px;
+	width: 120px;
+	font-weight: bold;
+	text-align: center;
+	margin-top: 5px;
+	margin-left: 100px;
+}
+.texto_chico {
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 10px;
+	color: #000;
+	text-align: center;
+}

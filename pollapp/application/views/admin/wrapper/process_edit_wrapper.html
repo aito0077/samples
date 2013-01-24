@@ -1,0 +1,39 @@
+<html metal:use-macro="/admin/wrapper/main.html/layout" metal:define-macro="process_edit_wrapper">
+
+    <div metal:fill-slot="main_content">
+        <div id="main_content"> 
+
+            <div class="row">
+                <div class="span4">
+                    <tal:block tal:condition="php:!empty(codigo_proceso)">
+                        <h3>Edici&oacute;n Proceso</h3>
+                    </tal:block>
+                    <tal:block tal:condition="php:empty(codigo_proceso)">
+                        <h3>Nuevo Proceso</h3>
+                    </tal:block>
+                </div>
+                <div id="button_demo" class="btn offset3 btn-warning span2" style="visibility:hidden"><i class="icon-play-circle icon-white"></i>&nbsp;Demo&nbsp;</div>
+                <div id="button_login_process" style="visibility:hidden" class="btn span2">Entrar al Proceso&nbsp;<i class="icon-random"></i></div>
+            </div>
+            <blockquote id="url_label" class="pull-right" style="visibility:hidden">
+                Direccion: <span class="text-info">www.pollapp-titq.rhcloud.com/p/<span id="url_process_code"></span></span>
+            </blockquote>
+            <div class="row">
+                <div class="span10">
+                    <ul class="nav nav-pills" id="solapa_edicion">
+                        <li class="active"><a id="solapa_proceso" href="#process_edit" data-toggle="tab">Proceso</a></li>
+                        <li><a id="solapa_actividad" href="#process_cuestionario" data-toggle="tab">Actividades</a></li>
+                        <li><a id="solapa_recursos" href="#process_recursos" data-toggle="tab">Recursos</a></li>
+                        <li><a id="solapa_usuarios" href="#process_usuarios" data-toggle="tab">Usuarios</a></li>
+                        <!--
+                        <li><a id="solapa_templates" href="#process_templates" data-toggle="tab">Templates</a></li>
+                        -->
+                    </ul>
+                </div>
+            </div>
+            <tal:block metal:define-slot="main_process_edit"/>
+        </div>
+    </div>
+
+
+</html>

@@ -1,0 +1,16 @@
+    <tal:block metal:define-macro="activity">
+
+        <div id="contenido_titulo_pregunta">Pregunta <span tal:content="actividad/orden">{{ACTIVIDAD_TITULO}}</span></div>
+        <div id="contenido_texto_pregunta">
+            <strong tal:content="actividad/descripcion">{{ACTIVIDAD_SUMARIO}}</strong>
+        </div>
+        <tal:block tal:repeat="respuesta actividad/respuestas">
+            <div id="contenido_texto_respuesta">
+                <label>
+                    <input type="radio" tal:attributes="name actividad/codigo; id respuesta/codigo; value respuesta/valor"/>
+                </label>
+                <span tal:content="respuesta/texto">{{RESPUESTA_TEXTO}}</span>
+            </div>
+        </tal:block>
+ 
+    </tal:block>

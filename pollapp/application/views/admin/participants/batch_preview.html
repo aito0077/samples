@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+        <table class="table table-striped table-hover table-bordered ">
+            <tbody>
+                <tr tal:repeat="line lines">
+                    <tal:block condition="has_delimiters">
+                        <td tal:repeat="td line">${td}</td>
+                    </tal:block>
+                    <tal:block condition="not: has_delimiters">
+                        <td>${line}</td>
+                    </tal:block>
+                </tr>
+            </tbody>
+        </table>
+

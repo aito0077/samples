@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" metal:define-macro="layout">
+
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <title>${proceso/descripcion}</title>
+
+        <tal:block metal:define-slot="main_css_templates"/>
+        <tal:block metal:define-slot="activity_css_resources"/>
+    </head>
+
+    <body>
+        <tal:block metal:define-slot="main_process_wrapper"/>
+        <tal:block metal:define-slot="main_js_templates"/>
+        <tal:block metal:define-slot="activity_js_resources"/>
+    </body>
+
+</html>
+

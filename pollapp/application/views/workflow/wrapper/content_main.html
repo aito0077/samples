@@ -1,0 +1,65 @@
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <title tal:content="proceso/sumario">TITULO PROCESO</title>
+		<meta name="apple-mobile-web-app-capable" content="yes" />
+		<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+
+		<link rel="stylesheet" href="/static/plugins/reveal/css/reveal.css"></link>
+		<link rel="stylesheet" href="/static/plugins/reveal/css/theme/default.css" id="theme"></link>
+
+		<!-- For syntax highlighting -->
+		<link rel="stylesheet" href="/static/plugins/reveal/lib/css/zenburn.css"></link>
+
+		<!-- If the query includes 'print-pdf', use the PDF print sheet -->
+		<script>
+			document.write( '<link rel="stylesheet" href="/static/plugins/reveal/css/print/' + ( window.location.search.match( /print-pdf/gi ) ? 'pdf' : 'paper' ) + '.css" type="text/css" media="print"></link>' );
+		</script>
+
+		<!--[if lt IE 9]>
+            <script src="/static/plugins/reveal/lib/js/html5shiv.js"></script>
+		<![endif]-->
+
+        <tal:block metal:define-slot="main_css_templates"/>
+    </head>
+
+	<body>
+		<div class="reveal">
+			<!-- Any section element inside of this container is displayed as a slide -->
+			<div class="slides">
+				<section tal:repeat="actividad proceso/activities" tal:attributes="id actividad/codigo">
+                    <div id="contenido_titulo_pregunta">Pregunta <span tal:content="actividad/orden">{{ACTIVIDAD_TITULO}}</span></div>
+                    <div id="contenido_texto_pregunta">
+                        <strong tal:content="structure actividad/texto">{{ACTIVIDAD_TEXTO}}</strong>
+                    </div>
+				</section>
+            </div>
+         </div>
+		<script src="/static/plugins/reveal/lib/js/head.min.js"></script>
+		<script src="/static/plugins/reveal/js/reveal.min.js"></script>
+
+		<script>
+
+			Reveal.initialize({
+				controls: true,
+				progress: true,
+				history: true,
+
+				theme: Reveal.getQueryHash().theme, 
+				transition: Reveal.getQueryHash().transition || 'default', 
+
+				dependencies: [
+					{ src: '/static/plugins/reveal/lib/js/classList.js', condition: function() { return !document.body.classList; } },
+					{ src: '/static/plugins/reveal/plugin/markdown/showdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+					{ src: '/static/plugins/reveal/plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+					{ src: '/static/plugins/reveal/plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } },
+					{ src: '/static/plugins/reveal/plugin/zoom-js/zoom.js', async: true, condition: function() { return !!document.body.classList; } },
+					{ src: '/static/plugins/reveal/plugin/notes/notes.js', async: true, condition: function() { return !!document.body.classList; } }
+				]
+			});
+
+		</script>
+
+	</body>
+</html>
+

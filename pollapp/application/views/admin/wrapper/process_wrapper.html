@@ -1,0 +1,38 @@
+<html metal:use-macro="/admin/wrapper/main.html/layout" metal:define-macro="process_wrapper">
+    <div metal:fill-slot="main_content">
+        <div class="row">
+            <div class="span3 bs-docs-sidebar">
+                <ul class="nav nav-list bs-docs-sidenav">
+                    <li><a id="#overview" href=""><i class="icon-chevron-right"></i>Proceso</a></li>
+                    <li><a id="#statistic" href=""><i class="icon-chevron-right"></i>Actividades</a></li>
+                    <li><a id="#reportes" href=""><i class="icon-chevron-right"></i>Estad&iacute;sticas</a></li>
+                </ul>
+            </div>
+            <div class="span9">
+                <div id="main_viewer">
+                    <tal:block metal:define-slot="main_process_view"/>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="page-header">
+    </div>
+
+    <tal:block metal:fill-slot="main_js_templates">
+        <script src="/static/js/moment.min.js"></script>
+        <script src="/static/js/lang/es.js"></script>
+
+        <script>
+            $(document).ready(function() {
+                $('#menu_procesos').attr('class', 'active');
+                moment.lang('es'); 
+                $.each($('.moment'), function(index, obj) {
+                    var milis = obj.innerHTML;
+                    console.log(milis);
+                    $(obj).html(moment.duration(milis, "seconds").humanize());
+                });
+            });
+        </script>
+
+    </tal:block>
+</html>

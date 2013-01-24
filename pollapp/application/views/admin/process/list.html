@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html metal:use-macro="/admin/wrapper/main.html/layout">
+    <div id="main_edit" metal:fill-slot="main_content">
+        <table class="table table-striped table-hover">
+            <caption><h2>Procesos</h2></caption>
+            <a class="btn btn-medium btn-primary offset9" href="/admin/process/add">Crear Nuevo Proceso</a>
+            <thead>
+                <tr>
+                    <th>Codigo</th>
+                    <th>Sumario</th>
+                    <th>Estado</th>
+                    <th><i class="icon-eye-open"></i></th>
+                    <th><i class="icon-edit"></i></th>
+                    <th><i class="icon-trash"></i></th>
+                </tr>
+            </thead>
+            <tbody>
+                <!--
+                <tr tal:repeat="proceso processes"  tal:attributes="class php: proceso['estado'] == 'INACTIVO' ? 'error' : NULL">
+                -->
+                <tr tal:repeat="proceso processes">
+                    <td tal:content="proceso/codigo">COD1</td>
+                    <td tal:content="proceso/sumario">Sumario de ejemplo para concurso</td>
+                    <td tal:content="proceso/estado">ACTIVO</td>
+                    <td><a class="span1 btn btn-small btn-success" href="/admin/process/view/${proceso/codigo}">Ver</a></td>
+                    <td><a class="span1 btn btn-small btn-primary" href="/admin/process/edit/${proceso/codigo}">Editar</a></td>
+                    <td><a class="span1 btn btn-small btn-danger" href="/admin/process/remove_proceso/${proceso/codigo}">Eliminar</a></td>
+                </tr>
+           </tbody>
+        </table>
+
+    </div> <!-- /container -->
+
+</html>

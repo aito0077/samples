@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <title>${proceso/sumario}</title>
+        <link href="/static/resources/projects/${proceso/codigo}/estilos.css" rel="stylesheet" type="text/css" />
+        <script src="/static/js/jquery.js"></script>
+        <script src="/static/resources/projects/${proceso/codigo}/js/images_treatment.js"></script>
+    </head>
+
+    <body>
+
+        <div id="contenedor_gral">
+            <form id="form_login" name='form1' method="POST" action="/p/${proceso/codigo}/${actividad/codigo}"> 
+                <input type="hidden" name="login" value="DO"/>
+                <input type="hidden" name="process_code" value="${proceso/codigo}"/>
+                <div id="contenedor_login">
+                    <div id="participa_login">PARTICIPÁ</div>
+                    <div id="ingresa_login">Ingresá con tu número de legajo</div>
+                    <div id="formulario_login">
+                        <tal:block tal:repeat="campo campos">
+                            <label for="textfield"></label>
+                            <input name="${campo/name}" id="${campo/name}" class="text_login" type="text" autocomplete="off"/>
+                        </tal:block>
+                    </div>
+                    <div id="acepto_login">Acepto las bases y condiciones</div>
+                    <div id="check_login">
+                        <input name="login_base" type="checkbox" class="checkbox" />
+                    </div>
+                    <div id="bases_loging">
+                        <a href="/workflow/process_viewer/bases/${proceso/codigo}" class="btn_off_bases">Bases y condiciones</a>
+                    </div>
+                    <div id="btn_ingresar_login">
+                        <span onclick="$('#form_login').submit()" class="btn_off_ing">ingresar</span>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+    </body>
+</html>

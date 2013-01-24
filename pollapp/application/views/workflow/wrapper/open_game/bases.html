@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <title>${proceso/sumario}</title>
+        <link href="/static/resources/projects/${proceso/codigo}/estilos.css" rel="stylesheet" type="text/css" />
+        <script src="/static/js/jquery.js"></script>
+        <script src="/static/resources/projects/${proceso/codigo}/js/images_treatment.js"></script>
+    </head>
+
+    <body onload="MM_preloadImages('/static/resources/projects/${proceso/codigo}/images/salir_roll.png')">
+        <div id="contenedor_gral_game">
+            <div id="header_game">
+
+            </div>
+
+            <div id="left_game">
+                <img src="/static/resources/projects/${proceso/codigo}/images/left_game.jpg" alt="left" width="159" height="519" border="0" />
+            </div>
+
+            <form id="form_logout" name='form1' method="POST" action="/p/${proceso/codigo}"> 
+                <div id="central_logout">
+                    <div id="contenedor_logout" style="overflow-y: scroll; overflow-x: hidden;">
+                        <tal:block tal:condition="php:!empty(bases)">
+                            <span class="pregunta_bold">${bases/descripcion}</span>
+                            <br/>
+                            <span tal:content="structure bases/texto">TEXTO BASES</span>
+                        </tal:block>
+                    </div>
+                    <div id="btn_salir">
+                        <span onclick="$('#form_logout').submit()" onmouseout="MM_swapImgRestore()" onmouseover="MM_swapImage('Image4','','/static/resources/projects/${proceso/codigo}/images/salir_roll.png',1)"><img src="/static/resources/projects/${proceso/codigo}/images/salir_off.png" name="Image4" width="145" height="80" border="0" id="Image4" /></span>
+                    </div>
+                </div>
+            </form>
+
+            <div id="footer_game">
+                <img src="/static/resources/projects/${proceso/codigo}/images/footer_game.jpg" width="1256" height="63" alt="foot" />
+            </div>
+        </div>
+    </body>
+</html>

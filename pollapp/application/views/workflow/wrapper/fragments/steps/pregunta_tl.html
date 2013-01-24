@@ -1,0 +1,13 @@
+    <tal:block metal:define-macro="activity">
+
+        <div id="contenido_titulo_pregunta">Pregunta <span tal:content="actividad/orden">{{ACTIVIDAD_TITULO}}</span></div>
+        <div id="contenido_texto_pregunta">
+            <strong tal:content="actividad/descripcion">{{ACTIVIDAD_SUMARIO}}</strong>
+        </div>
+        <div id="contenido_texto_respuesta">
+    		<label>
+      			<textarea tal:attributes="name actividad/codigo; id actividad/codigo" cols="80" rows="5"></textarea>
+    		</label>
+        </div>
+
+    </tal:block>

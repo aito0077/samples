@@ -1,0 +1,19 @@
+<html xmlns="http://www.w3.org/1999/xhtml" metal:define-macro="layout">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <title>TITULO PROCESO</title>
+
+        <tal:block metal:define-slot="main_css_templates"/>
+        <tal:block metal:define-slot="activity_css_resources"/>
+    </head>
+
+    <body>
+        <form name='form1' method="POST" action="/p/${proceso/codigo}/${actividad/codigo}"> 
+            <input type="hidden" name="process_code" value="${proceso/codigo}"/>
+            <tal:block metal:define-slot="main_process_wrapper"/>
+        </form>
+        <tal:block metal:define-slot="main_js_templates"/>
+        <tal:block metal:define-slot="activity_js_resources"/>
+    </body>
+</html>
+

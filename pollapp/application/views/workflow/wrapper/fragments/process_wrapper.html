@@ -1,0 +1,32 @@
+<html metal:use-macro="/workflow/wrapper/main.html/layout" metal:define-macro="process_wrapper">
+    <div metal:fill-slot="main_process_wrapper">
+            <div id="contenedor_general">
+                <div id="header">
+                    <tal:block metal:use-macro="/workflow/wrapper/fragments/header.html/header_template"/>
+               </div>
+                <div id="lateral">
+                    <tal:block metal:use-macro="/workflow/wrapper/fragments/lateral.html/lateral_template"/>
+                </div>
+                <div id="contenido">
+                    <tal:block metal:use-macro="/workflow/wrapper/fragments/content.html/content_template"/>
+                </div>
+
+                <div id="btn_siguiente">
+                    <input type='image' src="/static/resources/default/css/images/btn_siguiente.png" title="siguiente" alt="siguiente" name="btn_siguiente" width="149" height="37" border="0" id="btn_siguiente2"/>
+                </div>
+                <div id="footer_preguntas">
+                    <tal:block metal:use-macro="/workflow/wrapper/fragments/footer.html/footer_template"/>
+                </div>
+            </div>
+
+    </div>
+
+    <tal:block metal:fill-slot="main_css_templates">
+        <link href="/static/resources/default/css/styles.css" rel="stylesheet" type="text/css" />
+    </tal:block>
+
+    <tal:block metal:fill-slot="main_js_templates">
+
+    </tal:block>
+
+</html>

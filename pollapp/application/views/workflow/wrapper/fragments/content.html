@@ -1,0 +1,9 @@
+                    <tal:block metal:define-macro="content_template">
+
+                        <form name='form1' method="POST" action="/p/${proceso/codigo}/${actividad/codigo}"> 
+                            <input type="hidden" name="process_code" value="${proceso/codigo}"/>
+                            <tal:block metal:use-macro="/workflow/wrapper/fragments/steps/${actividad/class}_${actividad/type}.html/content_template"/>
+                        </form>
+ 
+                    </tal:block>
+ 
