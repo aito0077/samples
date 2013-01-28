@@ -1,0 +1,117 @@
+<?xml version="1.0"?>
+
+<project name="akka-engine" basedir="." default="all">
+
+	<!-- Uso de definiciones externas -->
+	<property file="properties/ant-enviroment.properties"/>
+
+	<property name="src.dir" value="src"/>
+	<property name="conf.dir" value="conf"/>
+	<property name="target.dir" value=".target"/>
+	<property name="dist.dir" value="dist"/>
+	<property name="akka.lib.dir" value="${akka.home}/lib/akka"/>
+
+	<property name="dir.root" value="."/>
+
+	<path id="master-classpath">
+		<fileset dir="${dir.root}/lib">
+			<include name="**/*.jar"/>
+		</fileset>
+		<fileset dir="${akka.home}/lib/akka">
+			<include name="**/*.jar"/>
+		</fileset>
+		<fileset dir="${akka.home}/deploy">
+			<include name="**/*.jar"/>
+		</fileset>
+		<fileset dir="${es.home}/lib">
+			<include name="**/*.jar"/>
+		</fileset>
+	</path>
+
+<!-- TAREAS BASICAS -->
+	<target name="clean" description="Limpiar directorios de salida (build, dist)">
+		<delete dir="${target.dir}"/>
+		<delete dir="${dist.dir}"/>
+	</target>
+
+	<target name="build" description="Compilar codigos fuentes y generar la libreria jar.">
+		<mkdir dir="${target.dir}"/>
+
+		<javac destdir="${target.dir}" source="1.6" target="1.6" debug="true"
+				deprecation="false" optimize="false" failonerror="true" nowarn="on">
+			<src path="${src.dir}" />
+			<exclude name="**/.tmp/**"/>
+			<exclude name="**/.**/**"/>
+			<exclude name="**/.*"/>
+			<classpath refid="master-classpath"/>
+		</javac>
+
+		<copy todir="${target.dir}" preservelastmodified="true">
+			<fileset dir="${src.dir}">
+				<include name="**/*.vm"/>
+				<include name="**/*.xml"/>
+				<include name="**/*.properties"/>
+			</fileset>
+		</copy>
+
+		<copy todir="${target.dir}" preservelastmodified="true">
+			<fileset dir="${conf.dir}">
+				<include name="**/*.properties"/>
+				<include name="**/*.conf"/>
+				<include name="**/*.xml"/>
+			</fileset>
+		</copy>
+
+	</target>
+
+	<target name="deploy">
+		<delete dir="${akka.home}/non_profit_libraries"/>
+		<mkdir dir="${akka.home}/non_profit_libraries"/>
+		<copy todir="${akka.home}/non_profit_libraries" preservelastmodified="true">
+            <fileset dir="${dir.root}/lib">
+                <include name="**/*.jar"/>
+            </fileset>
+		</copy>
+		<copy todir="${akka.home}/deploy" preservelastmodified="true">
+			<fileset dir="${dist.dir}">
+				<include name="non-profit-akka.jar"/>
+			</fileset>
+		</copy>
+	</target>
+
+	<target name="dist" depends="build">
+		<mkdir dir="${dist.dir}"/>
+		<jar jarfile="${dist.dir}/non-profit-akka.jar" basedir="${target.dir}">
+            <manifest>
+                <attribute name="Built-By" value="FPBabosos"/>
+                <attribute name="Private-Package" value="."/>
+                <attribute name="Bundle-ClassPath" value="."/>
+                <!--
+                <attribute name="Class-Path" value="${es.home}/lib/elasticsearch-0.15.1.jar ${es.home}/lib/jline-0.9.94.jar ${es.home}/lib/jna-3.2.7.jar ${es.home}/lib/log4j-1.2.15.jar ${es.home}/lib/lucene-analyzers-3.0.3.jar ${es.home}/lib/lucene-core-3.0.3.jar ${es.home}/lib/lucene-fast-vector-highlighter-3.0.3.jar ${es.home}/lib/lucene-highlighter-3.0.3.jar ${es.home}/lib/lucene-memory-3.0.3.jar ${es.home}/lib/lucene-queries-3.0.3.jar ${es.home}/lib/lucene-snowball-3.0.3.jar ${es.home}/lib/sigar/libsigar-amd64-freebsd-6.so ${es.home}/lib/sigar/libsigar-amd64-linux.so ${es.home}/lib/sigar/libsigar-amd64-solaris.so ${es.home}/lib/sigar/libsigar-ia64-linux.so ${es.home}/lib/sigar/libsigar-sparc64-solaris.so ${es.home}/lib/sigar/libsigar-sparc-solaris.so ${es.home}/lib/sigar/libsigar-universal64-macosx.dylib ${es.home}/lib/sigar/libsigar-universal-macosx.dylib ${es.home}/lib/sigar/libsigar-x86-freebsd-5.so ${es.home}/lib/sigar/libsigar-x86-freebsd-6.so ${es.home}/lib/sigar/libsigar-x86-linux.so ${es.home}/lib/sigar/libsigar-x86-solaris.so ${es.home}/lib/sigar/sigar-1.6.4.jar ${akka.home}/non_profit_libraries/spring-data/spring-data-document-core-1.0.0.M1.jar ${akka.home}/non_profit_libraries/spring-data/spring-data-mongodb-1.0.0.M1.jar lib/camel/camel-jackson-2.2.0.jar"/>
+                -->
+            </manifest>
+        </jar>
+		<mkdir dir="${dist.dir}/lib"/>
+		<copy todir="${dist.dir}/lib" preservelastmodified="true">
+            <fileset dir="${dir.root}/lib/camel/">
+                <include name="*.jar"/>
+            </fileset>
+            <fileset dir="${dir.root}/lib/mongodb/">
+                <include name="*.jar"/>
+            </fileset>
+            <fileset dir="${dir.root}/lib/own/">
+                <include name="*.jar"/>
+            </fileset>
+            <fileset dir="${es.home}/lib">
+                <include name="*.jar"/>
+            </fileset>
+            <fileset dir="${es.home}/lib/sigar/">
+                <include name="*.jar"/>
+            </fileset>
+		</copy>
+ 
+	</target>
+
+	<target name="all" depends="clean,build" description="Clean,build"/>
+
+</project>
